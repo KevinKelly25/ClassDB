@@ -3,6 +3,9 @@
 <a href="https://zenhub.com"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"/></a>
 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg"/></a>
 
+This is a modification of ClassDB to fit the needs of a web application being developed, which will be made public soon. This web application uses ClassDB extensivly but needs some modification to meet the web apps needs. This fork is meant for these modifications.
+The main repo can be found ([here](https://github.com/DASSL/ClassDB)). The below information is also from the main repository. 
+
 # ClassDB
 
 ClassDB is an open-source database application to help instructors provide students an environment to experiment with relational data. With ClassDB, each student gets their own space (think _schema_) with all rights to that space. The instructor is able to read from any student's space, but no student has access to another student's space. Further, the instructor can create additional common spaces with selected rights for students.
