@@ -80,21 +80,14 @@ BEGIN
 
    --Let only app-specific roles connect to the DB
    -- no need for ClassDB to connect to the DB
-   EXECUTE format('GRANT CONNECT ON DATABASE %I TO ClassDB_Instructor, '
-                  'ClassDB_Student, ClassDB_DBManager', currentDB);
+   EXECUTE format('GRANT CONNECT ON DATABASE %I TO ClassDB_Admin, '
+                  'ClassDB_Instructor, ClassDB_Student, ClassDB_DBManager'
+                  , currentDB);
 
    --Allow ClassDB and ClassDB users to create schemas on the current database
-   EXECUTE format('GRANT CREATE ON DATABASE %I TO ClassDB, ClassDB_Instructor,'
-                  ' ClassDB_DBManager, ClassDB_Student', currentDB);
-
-   --Grant ClassDB to the current user
-   -- allows altering privileges of objects, even after being owned by ClassDB
-
-   --The use of CURRENT_USER in a GRANT query is permitted only from pg9.5
-   -- Use dynamic SQL on all pg versions so the script compiles on pg9.4 and earlier
-   -- replace dynamic SQL with the commmented out query when pg9.4 is unsupported
-   --GRANT ClassDB TO CURRENT_USER;
-   EXECUTE FORMAT('GRANT ClassDB TO %s', CURRENT_USER);
+   EXECUTE format('GRANT CREATE ON DATABASE %I TO ClassDB, ClassDB_Admin, '
+                  'ClassDB_Instructor, ClassDB_Student, ClassDB_DBManager'
+                  , currentDB);
 
 END
 $$;
@@ -104,11 +97,12 @@ $$;
 --Prevent users who are not instructors from modifying the public schema
 -- public schema contains objects and functions students can read
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-GRANT CREATE ON SCHEMA public TO ClassDB_Instructor;
+GRANT CREATE ON SCHEMA public TO ClassDB_Admin, ClassDB_Instructor;
 
 --Create a schema to hold app's admin info and assign privileges on that schema
 CREATE SCHEMA IF NOT EXISTS classdb AUTHORIZATION ClassDB;
-GRANT USAGE ON SCHEMA classdb TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT USAGE ON SCHEMA classdb 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 COMMIT;

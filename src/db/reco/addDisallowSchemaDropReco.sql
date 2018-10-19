@@ -82,7 +82,7 @@ $$ LANGUAGE sql
 
 REVOKE ALL ON FUNCTION ClassDB.disallowSchemaDrop() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.disallowSchemaDrop()
-   TO ClassDB_Instructor, ClassDB_DBManager, ClassDB;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager, ClassDB;
 
 
 
@@ -95,7 +95,7 @@ $$ LANGUAGE sql
 
 REVOKE ALL ON FUNCTION ClassDB.allowSchemaDrop() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.allowSchemaDrop()
-   TO ClassDB_Instructor, ClassDB_DBManager, ClassDB;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager, ClassDB;
 
 
 
@@ -123,7 +123,7 @@ $$ LANGUAGE sql
 ALTER FUNCTION ClassDB.isSchemaDropAllowed() OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.isSchemaDropAllowed() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.isSchemaDropAllowed()
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 COMMIT;

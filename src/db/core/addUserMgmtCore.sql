@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS ClassDB.DDLActivity
 -- the code does something significantly different
 ALTER TABLE ClassDB.DDLActivity OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.DDLActivity FROM PUBLIC;
-GRANT SELECT ON ClassDB.DDLActivity TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.DDLActivity TO 
+   ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Define a function to upgrade table DDLActivity from v2.0 to v.21
@@ -147,7 +148,7 @@ CREATE TABLE IF NOT EXISTS ClassDB.ConnectionActivity
 ALTER TABLE ClassDB.ConnectionActivity OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.ConnectionActivity FROM PUBLIC;
 GRANT SELECT ON ClassDB.ConnectionActivity
-      TO ClassDB_Instructor, ClassDB_DBManager;
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 

@@ -86,7 +86,8 @@ ORDER BY UserName;
 
 ALTER VIEW ClassDB.User OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.User FROM PUBLIC;
-GRANT SELECT ON ClassDB.User TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.User 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -102,7 +103,8 @@ CREATE OR REPLACE VIEW ClassDB.Instructor AS
 
 ALTER VIEW ClassDB.Instructor OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.Instructor FROM PUBLIC;
-GRANT SELECT ON ClassDB.Instructor TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.Instructor 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -116,7 +118,8 @@ CREATE OR REPLACE VIEW ClassDB.Student AS
 
 ALTER VIEW ClassDB.Student OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.Student FROM PUBLIC;
-GRANT SELECT ON ClassDB.Student TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.Student 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -130,7 +133,8 @@ CREATE OR REPLACE VIEW ClassDB.DBManager AS
 
 ALTER VIEW ClassDB.DBManager OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.DBManager FROM PUBLIC;
-GRANT SELECT ON ClassDB.DBManager TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.DBManager 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Define a view to return Team members and thier respective team
@@ -145,7 +149,8 @@ CREATE OR REPLACE VIEW ClassDB.TeamMember AS
 
 ALTER VIEW ClassDB.TeamMember OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.User FROM PUBLIC;
-GRANT SELECT ON ClassDB.TeamMember TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.TeamMember 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Define a view to return known teams with thier RoleName, FullName, SchemaName,
@@ -167,7 +172,8 @@ CREATE OR REPLACE VIEW ClassDB.Team AS
 
 ALTER VIEW ClassDB.Team OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.Team FROM PUBLIC;
-GRANT SELECT ON ClassDB.Team TO ClassDB_Instructor, ClassDB_DBManager;
+GRANT SELECT ON ClassDB.Team 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 COMMIT;

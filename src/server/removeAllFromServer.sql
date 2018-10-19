@@ -51,6 +51,7 @@ DROP ROLE IF EXISTS ClassDB_Instructor;
 DROP ROLE IF EXISTS ClassDB_DBManager;
 DROP ROLE IF EXISTS ClassDB_Student;
 DROP ROLE IF EXISTS ClassDB_Team;
+DROP ROLE IF EXISTS ClassDB_Admin;
 DROP ROLE IF EXISTS ClassDB;
 
 RESET client_min_messages;
