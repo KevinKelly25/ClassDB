@@ -116,7 +116,7 @@ GRANT SELECT ON ClassDB.RoleBase
    TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 GRANT UPDATE (FullName, ExtraInfo) ON ClassDB.RoleBase
-   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 

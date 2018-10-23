@@ -14,7 +14,7 @@
 START TRANSACTION;
 
 
---Create Instructor, Student, and DBManager to login for testing purposes.
+--Create Instructor, Student, DBManager, Admin to login for testing purposes.
 -- The password for these users will be the same as their username
 SELECT ClassDB.createInstructor('ptins0', 'Instructor 0');
 SELECT ClassDB.createInstructor('ptins1', 'Instructor 1');
@@ -27,6 +27,8 @@ SELECT ClassDB.createDBManager('ptdbm1', 'DB Manager 1');
 
 --Create team for testing access to team resources
 SELECT ClassDB.createTeam('ptTeam0', 'Team 0');
+SELECT ClassDB.AddToTeam('ptstu0','ptTeam0');
 
+CREATE USER ptadmin0 IN ROLE classdb_admin PASSWORD 'ptadmin0';
 
 COMMIT;
