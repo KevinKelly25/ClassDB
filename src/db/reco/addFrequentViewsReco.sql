@@ -69,27 +69,42 @@ DROP FUNCTION IF EXISTS public.getMyDDLActivity();
 DROP FUNCTION IF EXISTS ClassDB.getUserDDLActivity(ClassDB.IDNameDomain);
 
 
-
---This view returns all tables and views owned by student users
+--This view returns all tables and views owned by users
 -- uses pg_catalog instead of INFORMATION_SCHEMA because the latter does not
 -- support the case where a table owner and the containing schema's owner are
 -- different.
+CREATE OR REPLACE VIEW ClassDB.Tables AS
+(
+  SELECT tableowner UserName, schemaname SchemaName, tablename TableName,
+         'TABLE' TableType, hasindexes HasIndexes, hastriggers HasTriggers,
+         hasrules HasRules
+  FROM pg_catalog.pg_tables
+  WHERE SchemaName NOT IN ('pg_catalog','classdb','information_schema')
+
+  UNION
+
+  SELECT ViewOwner, SchemaName, ViewName, 'VIEW', NULL, NULL, NULL
+  FROM pg_catalog.pg_views
+  WHERE SchemaName NOT IN ('pg_catalog','classdb','information_schema')
+  ORDER BY UserName, SchemaName, TableName
+);
+
+ALTER VIEW ClassDB.Tables OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.Tables FROM PUBLIC;
+GRANT SELECT ON ClassDB.Tables TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This view returns all tables and views owned by student users
 -- does not use view ClassDB.Student for efficiency: that view computes many
 -- things not required here, and using that would require a join
 -- this view is accessible only to instructors.
 CREATE OR REPLACE VIEW ClassDB.StudentTable AS
 (
-  SELECT tableowner UserName, schemaname SchemaName,
-         tablename TableName, 'TABLE' TableType
-  FROM pg_catalog.pg_tables
-  WHERE ClassDB.isStudent(tableowner::ClassDB.IDNameDomain)
-
-  UNION
-
-  SELECT ViewOwner, SchemaName, ViewName, 'VIEW'
-  FROM pg_catalog.pg_views
-  WHERE ClassDB.isStudent(viewowner::ClassDB.IDNameDomain)
-  ORDER BY UserName, SchemaName, TableName
+  SELECT UserName, SchemaName, TableName,TableType, HasIndexes, 
+         HasTriggers, HasRules
+  FROM ClassDB.Tables
+  WHERE ClassDB.isStudent(UserName::ClassDB.IDNameDomain)
 );
 
 ALTER VIEW ClassDB.StudentTable OWNER TO ClassDB;
