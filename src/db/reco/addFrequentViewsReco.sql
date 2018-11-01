@@ -73,9 +73,9 @@ DROP FUNCTION IF EXISTS ClassDB.getUserDDLActivity(ClassDB.IDNameDomain);
 -- uses pg_catalog instead of INFORMATION_SCHEMA because the latter does not
 -- support the case where a table owner and the containing schema's owner are
 -- different.
-CREATE OR REPLACE VIEW ClassDB.Tables AS
+CREATE OR REPLACE VIEW ClassDB.UserTables AS
 (
-  SELECT tableowner UserName, schemaname SchemaName, tablename TableName,
+  SELECT tableowner UserName, schemaname SchemaName, tablename TableName, 
          'TABLE' TableType, hasindexes HasIndexes, hastriggers HasTriggers,
          hasrules HasRules
   FROM pg_catalog.pg_tables
@@ -89,9 +89,9 @@ CREATE OR REPLACE VIEW ClassDB.Tables AS
   ORDER BY UserName, SchemaName, TableName
 );
 
-ALTER VIEW ClassDB.Tables OWNER TO ClassDB;
-REVOKE ALL PRIVILEGES ON ClassDB.Tables FROM PUBLIC;
-GRANT SELECT ON ClassDB.Tables TO ClassDB_Admin, ClassDB_Instructor;
+ALTER VIEW ClassDB.UserTables OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserTables FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserTables TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -103,7 +103,7 @@ CREATE OR REPLACE VIEW ClassDB.StudentTable AS
 (
   SELECT UserName, SchemaName, TableName,TableType, HasIndexes, 
          HasTriggers, HasRules
-  FROM ClassDB.Tables
+  FROM ClassDB.UserTables
   WHERE ClassDB.isStudent(UserName::ClassDB.IDNameDomain)
 );
 
@@ -126,6 +126,101 @@ CREATE OR REPLACE VIEW ClassDB.StudentTableCount AS
 ALTER VIEW ClassDB.StudentTableCount OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentTableCount FROM PUBLIC;
 GRANT SELECT ON ClassDB.StudentTableCount TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This view returns all functions and procedures owned by users
+CREATE OR REPLACE VIEW ClassDB.UserFunctions AS
+(
+  SELECT r.rolname AS Username ,n.nspname AS SchemaName, 
+         p.proname AS FunctionName, p.pronargs AS NumberOfArguments, 
+         p.prorettype AS ReturnType
+  FROM pg_catalog.pg_proc p INNER JOIN pg_catalog.pg_namespace n 
+  ON p.proowner = n.oid INNER JOIN pg_catalog.pg_roles r ON p.proowner = r.oid
+  WHERE nspname NOT IN ('pg_catalog','classdb','information_schema')
+);
+
+ALTER VIEW ClassDB.UserFunctions OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserFunctions FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserFunctions TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This view returns all Functions and procedures owned by students
+CREATE OR REPLACE VIEW ClassDB.StudentFunctions AS
+(
+  SELECT Username, SchemaName, FunctionName, NumberOfArguments, ReturnType
+  FROM ClassDB.UserFunctions
+  WHERE ClassDB.isStudent(UserName::ClassDB.IDNameDomain)
+);
+
+ALTER VIEW ClassDB.UserFunctions OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserFunctions FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserFunctions TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This view returns all triggers owned by users
+CREATE OR REPLACE VIEW ClassDB.UserTriggers AS
+(
+  SELECT r.rolname AS Username, n.nspname AS Schema,
+         t.tgname AS TriggerName, c.relname AS OnTable
+  FROM pg_catalog.pg_trigger t
+  INNER JOIN pg_catalog.pg_class c ON c.oid = t.tgrelid
+  INNER JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+  INNER JOIN pg_catalog.pg_roles r ON r.oid = c.relowner
+  WHERE n.nspname NOT IN ('pg_catalog','classdb','information_schema')
+);
+
+ALTER VIEW ClassDB.UserTriggers OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserTriggers FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserTriggers TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This view returns all triggers owned by students
+CREATE OR REPLACE VIEW ClassDB.StudentTriggers AS
+(
+  SELECT Username, SchemaName, TriggerName, OnTable
+  FROM ClassDB.UserTriggers
+  WHERE ClassDB.isStudent(UserName::ClassDB.IDNameDomain)
+);
+
+ALTER VIEW ClassDB.UserTriggers OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserTriggers FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserTriggers TO ClassDB_Admin, ClassDB_Instructor;
+
+
+--This view returns all triggers owned by users
+CREATE OR REPLACE VIEW ClassDB.UserIndexes AS
+(
+  SELECT r.rolname AS Username, n.nspname AS Schema, t.tgname AS TriggerName
+  FROM pg_catalog.pg_trigger t
+  INNER JOIN pg_catalog.pg_class c ON c.oid = t.tgrelid
+  INNER JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+  INNER JOIN pg_catalog.pg_roles r ON r.oid = c.relowner
+  WHERE n.nspname NOT IN ('pg_catalog','classdb','information_schema')
+);
+
+ALTER VIEW ClassDB.UserTriggers OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserTriggers FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserTriggers TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This view returns all triggers owned by students
+CREATE OR REPLACE VIEW ClassDB.StudentIndexes AS
+(
+  SELECT Username, SchemaName, TriggerName
+  FROM ClassDB.UserTriggers
+  WHERE ClassDB.isStudent(UserName::ClassDB.IDNameDomain)
+);
+
+ALTER VIEW ClassDB.UserTriggers OWNER TO ClassDB;
+REVOKE ALL PRIVILEGES ON ClassDB.UserTriggers FROM PUBLIC;
+GRANT SELECT ON ClassDB.UserTriggers TO ClassDB_Admin, ClassDB_Instructor;
+
+
 
 
 
