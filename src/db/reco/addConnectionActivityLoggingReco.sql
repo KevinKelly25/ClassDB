@@ -63,7 +63,7 @@ REVOKE ALL ON FUNCTION ClassDB.isConnectionLoggingEnabled()
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isConnectionLoggingEnabled()
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Helper function to check if server parameter logging_collector is set to 'on' or 'off'.
@@ -83,7 +83,7 @@ REVOKE ALL ON FUNCTION ClassDB.isLoggingCollectorEnabled()
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isLoggingCollectorEnabled()
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Function to import log files between a starting date and the current date
@@ -257,6 +257,6 @@ $$ LANGUAGE plpgsql
 REVOKE ALL ON FUNCTION ClassDB.importConnectionLog(DATE) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.importConnectionLog(DATE)
-   TO ClassDB_Instructor, ClassDB_DBManager, ClassDB;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager, ClassDB;
 
 COMMIT;

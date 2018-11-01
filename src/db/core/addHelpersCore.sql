@@ -389,7 +389,7 @@ ALTER FUNCTION ClassDB.listOwnedObjects(ClassDB.IDNameDomain) OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.listOwnedObjects(ClassDB.IDNameDomain) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.listOwnedObjects(ClassDB.IDNameDomain)
-      TO ClassDB_Instructor, ClassDB_DBManager;
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Define a function to list all 'orphan' objects owned by ClassDB_Instructor and
@@ -435,7 +435,7 @@ ALTER FUNCTION ClassDB.listOrphanObjects(ClassDB.IDNameDomain) OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.listOrphanObjects(ClassDB.IDNameDomain) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.listOrphanObjects(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Define a function to reassign ownership of an object. The executing user must
@@ -643,7 +643,7 @@ $$ LANGUAGE sql
 
 REVOKE ALL ON FUNCTION ClassDB.getSessionID() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getSessionID()
-   TO ClassDB_Instructor, ClassDB_DBManager, ClassDB;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager, ClassDB;
 
 
 

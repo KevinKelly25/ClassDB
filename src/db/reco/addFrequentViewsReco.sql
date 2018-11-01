@@ -94,7 +94,7 @@ CREATE OR REPLACE VIEW ClassDB.StudentTable AS
 
 ALTER VIEW ClassDB.StudentTable OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentTable FROM PUBLIC;
-GRANT SELECT ON ClassDB.StudentTable TO ClassDB_Instructor;
+GRANT SELECT ON ClassDB.StudentTable TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -110,7 +110,7 @@ CREATE OR REPLACE VIEW ClassDB.StudentTableCount AS
 
 ALTER VIEW ClassDB.StudentTableCount OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentTableCount FROM PUBLIC;
-GRANT SELECT ON ClassDB.StudentTableCount TO ClassDB_Instructor;
+GRANT SELECT ON ClassDB.StudentTableCount TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -144,7 +144,7 @@ ALTER FUNCTION ClassDB.getUserActivitySummary(ClassDB.IDNameDomain)
 REVOKE ALL ON FUNCTION ClassDB.getUserActivitySummary(ClassDB.IDNameDomain)
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getUserActivitySummary(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -174,7 +174,7 @@ ALTER FUNCTION ClassDB.getStudentActivitySummary(ClassDB.IDNameDomain)
 REVOKE ALL ON FUNCTION ClassDB.getStudentActivitySummary(ClassDB.IDNameDomain)
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getStudentActivitySummary(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -188,7 +188,8 @@ CREATE OR REPLACE VIEW ClassDB.StudentActivitySummary AS
 
 ALTER VIEW ClassDB.StudentActivitySummary OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentActivitySummary FROM PUBLIC;
-GRANT SELECT ON ClassDB.StudentActivitySummary TO ClassDB_Instructor;
+GRANT SELECT ON ClassDB.StudentActivitySummary 
+      TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -216,7 +217,7 @@ ALTER FUNCTION ClassDB.getStudentActivitySummaryAnon(ClassDB.IDNameDomain)
 REVOKE ALL ON FUNCTION ClassDB.getStudentActivitySummaryAnon(ClassDB.IDNameDomain)
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getStudentActivitySummaryAnon(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -230,7 +231,8 @@ CREATE OR REPLACE VIEW ClassDB.StudentActivitySummaryAnon AS
 
 ALTER VIEW ClassDB.StudentActivitySummaryAnon OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentActivitySummaryAnon FROM PUBLIC;
-GRANT SELECT ON ClassDB.StudentActivitySummaryAnon TO ClassDB_Instructor;
+GRANT SELECT ON ClassDB.StudentActivitySummaryAnon 
+      TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -294,7 +296,7 @@ ALTER FUNCTION ClassDB.getUserDDLActivity(ClassDB.IDNameDomain)
 REVOKE ALL ON FUNCTION ClassDB.getUserDDLActivity(ClassDB.IDNameDomain)
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getUserDDLActivity(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -354,7 +356,7 @@ ALTER FUNCTION ClassDB.getUserConnectionActivity(ClassDB.IDNameDomain)
 REVOKE ALL ON FUNCTION ClassDB.getUserConnectionActivity(ClassDB.IDNameDomain)
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getUserConnectionActivity(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -418,7 +420,7 @@ $$ LANGUAGE sql
 ALTER FUNCTION ClassDB.getUserActivity(ClassDB.IDNameDomain) OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.getUserActivity(ClassDB.IDNameDomain) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getUserActivity(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -443,7 +445,7 @@ $$ LANGUAGE sql
 ALTER FUNCTION ClassDB.getStudentActivity(ClassDB.IDNameDomain) OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.getStudentActivity(ClassDB.IDNameDomain) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getStudentActivity(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -456,7 +458,7 @@ CREATE OR REPLACE VIEW ClassDB.StudentActivity AS
 
 ALTER VIEW ClassDB.StudentActivity OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentActivity FROM PUBLIC;
-GRANT SELECT ON ClassDB.StudentActivity TO ClassDB_Instructor;
+GRANT SELECT ON ClassDB.StudentActivity TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -482,7 +484,7 @@ ALTER FUNCTION ClassDB.getStudentActivityAnon(ClassDB.IDNameDomain)
 REVOKE ALL ON FUNCTION ClassDB.getStudentActivityAnon(ClassDB.IDNameDomain)
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.getStudentActivityAnon(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -495,7 +497,7 @@ CREATE OR REPLACE VIEW ClassDB.StudentActivityAnon AS
 
 ALTER VIEW ClassDB.StudentActivityAnon OWNER TO ClassDB;
 REVOKE ALL PRIVILEGES ON ClassDB.StudentActivityAnon FROM PUBLIC;
-GRANT SELECT ON ClassDB.StudentActivityAnon TO ClassDB_Instructor;
+GRANT SELECT ON ClassDB.StudentActivityAnon TO ClassDB_Admin, ClassDB_Instructor;
 
 
 

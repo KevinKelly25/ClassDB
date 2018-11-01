@@ -722,9 +722,9 @@ BEGIN
    PERFORM ClassDB.createDBManager('testStuDBM0', 'Test student/DB manager 0');
    RESET client_min_messages;
 
-   --Create DB manager to handle default object disposition
-   PERFORM ClassDB.createDBManager('tempdbm0', 'Temporary DB manager 0');
-   SET SESSION AUTHORIZATION tempDBM0;
+   --Create Admin to handle default object disposition
+   CREATE USER temp_admin IN ROLE classdb_admin;
+   SET SESSION AUTHORIZATION temp_admin;
 
    --Suppress NOTICEs about ownership reassignment
    SET SESSION client_min_messages TO WARNING;
@@ -741,7 +741,7 @@ BEGIN
    DROP OWNED BY testStu2;
    DROP ROLE testStu2;
 
-   SET SESSION AUTHORIZATION tempDBM0;
+   SET SESSION AUTHORIZATION temp_admin;
    PERFORM ClassDB.dropStudent('testStu2');
 
    --Drop server role and owned objects for fourth student
@@ -783,19 +783,19 @@ BEGIN
    END IF;
 
    --Check for ownership of existing schemas
-   IF NOT(ClassDB.getSchemaOwnerName('testStu0') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testStu1') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testStu4') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testSchema') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testStuDBM0') = 'tempdbm0')
+   IF NOT(ClassDB.getSchemaOwnerName('testStu0') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testStu1') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testStu4') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testSchema') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testStuDBM0') = 'temp_admin')
    THEN
       RETURN 'FAIL: Code 3';
    END IF;
 
    --Cleanup
-   DROP OWNED BY tempDBM0;
-   DROP ROLE testStu0, testStu4, testStuDBM0, tempDBM0;
-   DELETE FROM ClassDB.RoleBase WHERE RoleName IN ('teststudbm0', 'tempdbm0');
+   DROP OWNED BY temp_admin;
+   DROP ROLE testStu0, testStu4, testStuDBM0, temp_admin;
+   DELETE FROM ClassDB.RoleBase WHERE RoleName IN ('teststudbm0', 'temp_admin');
 
    RETURN 'PASS';
 END;
@@ -823,9 +823,9 @@ BEGIN
    PERFORM ClassDB.createDBManager('testInsDBM0', 'Test instructor/DB manager 0');
    RESET client_min_messages;
 
-   --Create DB manager to handle default object disposition
-   PERFORM ClassDB.createDBManager('tempdbm0', 'Temporary DB manager 0');
-   SET SESSION AUTHORIZATION tempDBM0;
+   --Create Admin to handle default object disposition
+   CREATE USER temp_admin IN ROLE classdb_admin;
+   SET SESSION AUTHORIZATION temp_admin;
 
    --Suppress NOTICEs about ownership reassignment
    SET SESSION client_min_messages TO WARNING;
@@ -842,7 +842,7 @@ BEGIN
    DROP OWNED BY testIns2;
    DROP ROLE testIns2;
 
-   SET SESSION AUTHORIZATION tempDBM0;
+   SET SESSION AUTHORIZATION temp_admin;
    PERFORM ClassDB.dropInstructor('testIns2');
 
    --Drop server role and owned objects for fourth instructor
@@ -884,19 +884,19 @@ BEGIN
    END IF;
 
    --Check for ownership of existing schemas
-   IF NOT(ClassDB.getSchemaOwnerName('testIns0') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testIns1') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testIns4') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testSchema') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testInsDBM0') = 'tempdbm0')
+   IF NOT(ClassDB.getSchemaOwnerName('testIns0') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testIns1') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testIns4') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testSchema') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testInsDBM0') = 'temp_admin')
    THEN
       RETURN 'FAIL: Code 3';
    END IF;
 
    --Cleanup
-   DROP OWNED BY tempDBM0;
-   DROP ROLE testIns0, testIns4, testInsDBM0, tempDBM0;
-   DELETE FROM ClassDB.RoleBase WHERE RoleName IN ('testinsdbm0', 'tempdbm0');
+   DROP OWNED BY temp_admin;
+   DROP ROLE testIns0, testIns4, testInsDBM0, temp_admin;
+   DELETE FROM ClassDB.RoleBase WHERE RoleName IN ('testinsdbm0', 'temp_admin');
 
    RETURN 'PASS';
 END;
@@ -924,9 +924,9 @@ BEGIN
    PERFORM ClassDB.createStudent('testDBMStu0', 'Test DB manager/Student 0');
    RESET client_min_messages;
 
-   --Create DB manager to handle default object disposition
-   PERFORM ClassDB.createDBManager('tempdbm0', 'Temporary DB manager 0');
-   SET SESSION AUTHORIZATION tempDBM0;
+   --Create Admin to handle default object disposition
+   CREATE USER temp_admin IN ROLE classdb_admin;
+   SET SESSION AUTHORIZATION temp_admin;
 
    --Suppress NOTICEs about ownership reassignment
    SET SESSION client_min_messages TO WARNING;
@@ -943,7 +943,7 @@ BEGIN
    DROP OWNED BY testDBM2;
    DROP ROLE testDBM2;
 
-   SET SESSION AUTHORIZATION tempDBM0;
+   SET SESSION AUTHORIZATION temp_admin;
    PERFORM ClassDB.dropDBManager('testDBM2');
 
    --Drop server role and owned objects for fourth DB manager
@@ -985,19 +985,19 @@ BEGIN
    END IF;
 
    --Check for ownership of existing schemas
-   IF NOT(ClassDB.getSchemaOwnerName('testDBM0') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testDBM1') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testDBM4') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testSchema') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testDBMStu0') = 'tempdbm0')
+   IF NOT(ClassDB.getSchemaOwnerName('testDBM0') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testDBM1') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testDBM4') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testSchema') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testDBMStu0') = 'temp_admin')
    THEN
       RETURN 'FAIL: Code 3';
    END IF;
 
    --Cleanup
-   DROP OWNED BY tempDBM0;
-   DROP ROLE testDBM0, testDBM4, testDBMStu0, tempDBM0;
-   DELETE FROM ClassDB.RoleBase WHERE RoleName IN ('testdbmstu0', 'tempdbm0');
+   DROP OWNED BY temp_admin;
+   DROP ROLE testDBM0, testDBM4, testDBMStu0, temp_admin;
+   DELETE FROM ClassDB.RoleBase WHERE RoleName IN ('testdbmstu0', 'temp_admin');
 
    RETURN 'PASS';
 END;
@@ -1017,9 +1017,9 @@ BEGIN
    PERFORM ClassDB.createTeam('team4_dropTeam', 'Test team 4', NULL, 'Info');
    CREATE SCHEMA testSchema AUTHORIZATION team4_dropTeam;
    
-   --Create DB manager to handle default object disposition
-   PERFORM ClassDB.createDBManager('DBM0_dropTeam', 'Temporary DB manager 0');  
-   SET SESSION AUTHORIZATION DBM0_dropTeam;
+   --Create Admin to handle default object disposition
+   CREATE USER Admin0_dropTeam IN ROLE classdb_admin;
+   SET SESSION AUTHORIZATION Admin0_dropTeam;
    
    --Suppress NOTICEs about ownership reassignment
    SET SESSION client_min_messages TO WARNING;
@@ -1036,7 +1036,7 @@ BEGIN
    DROP OWNED BY team2_dropTeam;
    DROP ROLE team2_dropTeam;
 
-   SET SESSION AUTHORIZATION DBM0_dropTeam;
+   SET SESSION AUTHORIZATION Admin0_dropTeam;
    PERFORM ClassDB.dropTeam('team2_dropTeam');
 
    --Drop server role and owned objects for fourth team
@@ -1073,10 +1073,10 @@ BEGIN
    END IF;
 
    --Check for ownership of existing schemas
-   IF NOT(ClassDB.getSchemaOwnerName('team0_dropTeam') = ClassDB.foldPgID('DBM0_dropTeam')
-      AND ClassDB.getSchemaOwnerName('team1_dropTeam') = ClassDB.foldPgID('DBM0_dropTeam')
-      AND ClassDB.getSchemaOwnerName('team4_dropTeam') = ClassDB.foldPgID('DBM0_dropTeam')
-      AND ClassDB.getSchemaOwnerName('testSchema') = ClassDB.foldPgID('DBM0_dropTeam'))
+   IF NOT(ClassDB.getSchemaOwnerName('team0_dropTeam') = ClassDB.foldPgID('Admin0_dropTeam')
+      AND ClassDB.getSchemaOwnerName('team1_dropTeam') = ClassDB.foldPgID('Admin0_dropTeam')
+      AND ClassDB.getSchemaOwnerName('team4_dropTeam') = ClassDB.foldPgID('Admin0_dropTeam')
+      AND ClassDB.getSchemaOwnerName('testSchema') = ClassDB.foldPgID('Admin0_dropTeam'))
    THEN
       RETURN 'FAIL: Code 3';
    END IF;
@@ -1094,8 +1094,8 @@ BEGIN
    PERFORM ClassDB.createStudent('testStu1', 'Test student 1');
 
    --Create DB manager to handle default object disposition
-   PERFORM ClassDB.createDBManager('tempdbm0', 'Temporary DB manager 0');
-   SET SESSION AUTHORIZATION tempDBM0;
+   CREATE ROLE temp_admin IN ROLE classdb_admin;
+   SET SESSION AUTHORIZATION temp_admin;
 
    --Minimal drop
    PERFORM ClassDB.dropAllStudents();
@@ -1118,8 +1118,8 @@ BEGIN
    END IF;
 
    --Check for ownership of existing schemas
-   IF NOT(ClassDB.getSchemaOwnerName('testStu0') = 'tempdbm0'
-      AND ClassDB.getSchemaOwnerName('testStu1') = 'tempdbm0')
+   IF NOT(ClassDB.getSchemaOwnerName('testStu0') = 'temp_admin'
+      AND ClassDB.getSchemaOwnerName('testStu1') = 'temp_admin')
    THEN
       RETURN 'FAIL: Code 3';
    END IF;
@@ -1150,9 +1150,9 @@ BEGIN
    END IF;
 
    --Cleanup
-   DROP OWNED BY tempDBM0;
-   DROP ROLE tempDBM0;
-   DELETE FROM ClassDB.RoleBase WHERE RoleName = 'tempdbm0';
+   DROP OWNED BY temp_admin;
+   DROP ROLE temp_admin;
+   DELETE FROM ClassDB.RoleBase WHERE RoleName = 'temp_admin';
 
    RETURN 'PASS';
 END;
@@ -1167,8 +1167,8 @@ BEGIN
    PERFORM ClassDB.createTeam('team1_dropAllTeams', 'Test team 1');
    
    --Create DB manager to handle default object disposition
-   PERFORM ClassDB.createDBManager('DBM0_dropAllTeams', 'Temp DB manager 0');  
-   SET SESSION AUTHORIZATION DBM0_dropAllTeams;
+   CREATE USER Admin0_dropAllTeams IN ROLE classdb_admin;  
+   SET SESSION AUTHORIZATION Admin0_dropAllTeams;
 
    --Minimal drop, NOTICEs are silenced
    SET LOCAL client_min_messages TO WARNING;
@@ -1194,9 +1194,9 @@ BEGIN
 
    --Check for ownership of existing schemas
    IF NOT(ClassDB.getSchemaOwnerName('team0_dropAllTeams') 
-                                    = ClassDB.foldPgID('DBM0_dropAllTeams')
+                                    = ClassDB.foldPgID('Admin0_dropAllTeams')
       AND ClassDB.getSchemaOwnerName('team1_dropAllTeams') 
-                                    = ClassDB.foldPgID('DBM0_dropAllTeams'))
+                                    = ClassDB.foldPgID('Admin0_dropAllTeams'))
    THEN
       RETURN 'FAIL: Code 3';
    END IF;

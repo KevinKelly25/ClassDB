@@ -64,7 +64,7 @@ REVOKE ALL ON FUNCTION
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
    classdb.listUserConnections(VARCHAR(63))
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Kills a specific connection given a pid INT4
@@ -94,7 +94,7 @@ $$;
 REVOKE ALL ON FUNCTION classdb.killConnection(INT) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION classdb.killConnection(INT)
-TO ClassDB_Instructor, ClassDB_DBManager;
+TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 --Kills all open connections for a specific user
@@ -123,7 +123,7 @@ REVOKE ALL ON FUNCTION
    FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION
    classdb.killUserConnections(VARCHAR(63))
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 COMMIT;

@@ -1,4 +1,4 @@
---8_cleanup.sql - ClassDB
+--10_cleanup.sql - ClassDB
 
 --Andrew Figueroa, Steven Rollo, Sean Murthy
 --Data Science & Systems Lab (DASSL)
@@ -18,3 +18,6 @@ SELECT ClassDB.dropStudent('ptstu1', TRUE, TRUE, 'drop_c');
 SELECT ClassDB.dropDBManager('ptdbm0', TRUE, TRUE, 'drop_c');
 SELECT ClassDB.dropDBManager('ptdbm1', TRUE, TRUE, 'drop_c');
 SELECT Classdb.dropTeam('ptteam0', TRUE, TRUE, 'drop_c');
+
+DROP OWNED BY ptadmin0;
+DROP ROLE ptadmin0;

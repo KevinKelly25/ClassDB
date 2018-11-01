@@ -62,7 +62,7 @@ REVOKE ALL ON FUNCTION ClassDB.isStudent(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isStudent(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 CREATE OR REPLACE FUNCTION ClassDB.isInstructor(userName ClassDB.IDNameDomain)
@@ -85,7 +85,7 @@ REVOKE ALL ON FUNCTION ClassDB.isInstructor(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isInstructor(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 CREATE OR REPLACE FUNCTION ClassDB.isDBManager(userName ClassDB.IDNameDomain)
@@ -108,7 +108,7 @@ REVOKE ALL ON FUNCTION ClassDB.isDBManager(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isDBManager(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -175,7 +175,7 @@ GRANT EXECUTE ON FUNCTION
    ClassDB.createStudent(ClassDB.IDNameDomain, ClassDB.RoleBase.FullName%Type,
                          ClassDB.IDNameDomain, ClassDB.RoleBase.ExtraInfo%Type,
                          BOOLEAN, BOOLEAN, VARCHAR(128))
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -215,7 +215,7 @@ REVOKE ALL ON FUNCTION ClassDB.revokeStudent(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.revokeStudent(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -253,7 +253,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
    ClassDB.dropStudent(ClassDB.IDNameDomain, BOOLEAN, BOOLEAN, VARCHAR,
                        ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -286,7 +286,7 @@ REVOKE ALL ON FUNCTION ClassDB.dropAllStudents(BOOLEAN, BOOLEAN, VARCHAR,
 
 GRANT EXECUTE ON FUNCTION ClassDB.dropAllStudents(BOOLEAN, BOOLEAN, VARCHAR,
                                                   ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -350,7 +350,7 @@ GRANT EXECUTE ON FUNCTION
                             ClassDB.IDNameDomain,
                             ClassDB.RoleBase.ExtraInfo%Type,
                             BOOLEAN, BOOLEAN, VARCHAR(128))
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -381,7 +381,7 @@ REVOKE ALL ON FUNCTION ClassDB.revokeInstructor(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.revokeInstructor(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -419,7 +419,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
    ClassDB.dropInstructor(ClassDB.IDNameDomain, BOOLEAN, BOOLEAN, VARCHAR,
                           ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -476,7 +476,7 @@ GRANT EXECUTE ON FUNCTION
                            ClassDB.IDNameDomain,
                            ClassDB.RoleBase.ExtraInfo%Type,
                            BOOLEAN, BOOLEAN, VARCHAR(128))
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -501,7 +501,7 @@ REVOKE ALL ON FUNCTION ClassDB.revokeDBManager(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.revokeDBManager(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -539,7 +539,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
    ClassDB.dropDBManager(ClassDB.IDNameDomain, BOOLEAN, BOOLEAN, VARCHAR,
                          ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -593,7 +593,7 @@ GRANT EXECUTE ON FUNCTION
    ClassDB.createTeam(ClassDB.IDNameDomain, ClassDB.RoleBase.FullName%Type,
                       ClassDB.IDNameDomain, ClassDB.RoleBase.ExtraInfo%Type,
                       BOOLEAN, BOOLEAN)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -627,7 +627,7 @@ ALTER FUNCTION ClassDB.revokeTeam(ClassDB.IDNameDomain) OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.revokeTeam(ClassDB.IDNameDomain) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.revokeTeam(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -665,7 +665,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
    ClassDB.dropTeam(ClassDB.IDNameDomain, BOOLEAN, BOOLEAN, VARCHAR,
                     ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -698,7 +698,7 @@ REVOKE ALL ON FUNCTION
 GRANT EXECUTE ON FUNCTION
    ClassDB.dropAllTeams(BOOLEAN, BOOLEAN, VARCHAR,
                         ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -732,7 +732,7 @@ REVOKE ALL ON FUNCTION
 
 GRANT EXECUTE ON FUNCTION
    ClassDB.isTeamMember(ClassDB.IDNameDomain, ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -803,7 +803,7 @@ REVOKE ALL ON FUNCTION
 
 GRANT EXECUTE ON FUNCTION
    ClassDB.addToTeam(ClassDB.IDNameDomain, ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -890,7 +890,7 @@ REVOKE ALL ON FUNCTION
 
 GRANT EXECUTE ON FUNCTION
    ClassDB.removeFromTeam(ClassDB.IDNameDomain, ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -915,7 +915,7 @@ REVOKE ALL ON FUNCTION ClassDB.removeAllFromTeam(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.removeAllFromTeam(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 COMMIT;

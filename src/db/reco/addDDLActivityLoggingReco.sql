@@ -139,7 +139,7 @@ $$ LANGUAGE plpgsql
 -- permissions
 REVOKE ALL ON FUNCTION ClassDB.enableDDLActivityLogging() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.enableDDLActivityLogging()
-   TO ClassDB_Instructor, ClassDB_DBManager, ClassDB;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager, ClassDB;
 
 CREATE OR REPLACE FUNCTION ClassDB.disableDDLActivityLogging()
 RETURNS VOID AS
@@ -153,6 +153,6 @@ $$ LANGUAGE plpgsql
 
 REVOKE ALL ON FUNCTION ClassDB.disableDDLActivityLogging() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.disableDDLActivityLogging()
-   TO ClassDB_Instructor, ClassDB_DBManager, ClassDB;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager, ClassDB;
 
 COMMIT;

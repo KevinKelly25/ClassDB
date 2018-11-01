@@ -83,8 +83,10 @@ BEGIN
    PERFORM pg_temp.createGroupRole('classdb_instructor');
    PERFORM pg_temp.createGroupRole('classdb_dbmanager');
    PERFORM pg_temp.createGroupRole('classdb_team');
+   PERFORM pg_temp.createGroupRole('classdb_admin');
 
-   GRANT ClassDB_Student, ClassDB_Instructor, ClassDB_DBManager, ClassDB_Team
+   GRANT ClassDB_Student, ClassDB_Instructor, ClassDB_DBManager, ClassDB_Team,
+         ClassDB_Admin
    TO ClassDB;
 END
 $$;

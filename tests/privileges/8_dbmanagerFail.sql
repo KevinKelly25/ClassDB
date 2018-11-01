@@ -1,4 +1,4 @@
---7_dbmanagerFail.sql - ClassDB
+--8_dbmanagerFail.sql - ClassDB
 
 --Andrew Figueroa, Steven Rollo, Sean Murthy
 --Data Science & Systems Lab (DASSL)
@@ -10,6 +10,27 @@
 
 --PROVIDED AS IS. NO WARRANTIES EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 
+
+--DB Manager should not be able to manage roles
+SELECT ClassDB.createStudent('teststu_pt', 'testname');
+SELECT ClassDB.resetPassword('teststu_pt');
+SELECT ClassDB.createTeam('testteam_pt');
+SELECT ClassDB.addToTeam('teststu_pt', 'testteam_pt');
+SELECT ClassDB.removeFromTeam('teststu_pt', 'testteam_pt');
+SELECT ClassDB.revokeTeam('testteam_pt');
+SELECT ClassDB.dropTeam('testteam_pt', TRUE, TRUE, 'drop_c');
+SELECT ClassDB.revokeStudent('teststu_pt');
+SELECT ClassDB.dropStudent('teststu_pt', TRUE, TRUE, 'drop_c');
+--ClassDB.dropAllStudents is not being tested here because it would drop the
+-- test students that will later be used to connect to the DB
+--SELECT ClassDB.dropAllStudents(TRUE, TRUE, 'drop_c');
+
+SELECT ClassDB.createInstructor('testins_pt', 'testname');
+SELECT ClassDB.revokeInstructor('testins_pt');
+SELECT ClassDB.dropInstructor('testins_pt', TRUE, TRUE, 'drop_c');
+SELECT ClassDB.createDBManager('testman_pt', 'noname');
+SELECT ClassDB.revokeDBManager('testman_pt');
+SELECT ClassDB.dropDBManager('testman_pt', TRUE, TRUE, 'drop_c');
 
 --Not insert or delete from RoleBase table, or update unallowed columns
 INSERT INTO ClassDB.RoleBase VALUES('testRole', 'Test name', FALSE,
@@ -30,6 +51,10 @@ WHERE RoleName = 'ptstu0';
 UPDATE ClassDB.RoleBase
 SET SchemaName = 'diffSchema'
 WHERE RoleName = 'ptstu0';
+
+UPDATE ClassDB.RoleBase
+SET FullName = 'Updated name', ExtraInfo = 'Updated info'
+WHERE roleName = 'ptstu0';
 
 
 --Not insert, update, or delete from DDLActivity and ConnectionActivity tables

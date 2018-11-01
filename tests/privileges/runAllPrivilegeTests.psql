@@ -46,19 +46,30 @@
 \connect - ptins1
 \ir 4_instructorPass2.sql
 
+\setenv PGPASSWORD ptadmin0
+\connect - ptadmin0
+\ir 5_adminPass.sql
+
 \echo 'README: If any previous test resulted in a warning, error, or exception, then privilege tests have failed'
 \echo 'All of the following tests should result in errors'
 \prompt 'Press enter to continue...' unusedInputVariable
 
-\ir 5_instructorFail.sql
+
+\setenv PGPASSWORD ptins1
+\connect - ptins1
+\ir 6_instructorFail.sql
 
 \setenv PGPASSWORD ptstu1
 \connect - ptstu1
-\ir 6_studentFail.sql
+\ir 7_studentFail.sql
 
 \setenv PGPASSWORD ptdbm1
 \connect - ptdbm1
-\ir 7_dbmanagerFail.sql
+\ir 8_dbmanagerFail.sql
+
+\setenv PGPASSWORD ptadmin0
+\connect - ptadmin0
+\ir 9_adminFail.sql
 
 \echo 'Initiating cleanup'
 \prompt 'Press enter to continue...' unusedInputVariable
@@ -66,4 +77,4 @@
 --Reset stored password to allow user to log in with original role
 \setenv PGPASSWORD
 \connect - :POSTGRES_USER
-\ir 8_cleanup.sql
+\ir 10_cleanup.sql

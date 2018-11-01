@@ -113,10 +113,10 @@ REVOKE ALL PRIVILEGES ON ClassDB.RoleBase FROM PUBLIC;
 -- FullName and ExtraInfo are safe to edit after a record is created
 -- inserts and deletes are performed only in functions which run as ClassDB
 GRANT SELECT ON ClassDB.RoleBase
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 GRANT UPDATE (FullName, ExtraInfo) ON ClassDB.RoleBase
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 
@@ -142,7 +142,7 @@ REVOKE ALL ON FUNCTION ClassDB.getSchemaName(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.getSchemaName(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -165,7 +165,7 @@ REVOKE ALL ON FUNCTION ClassDB.isRoleKnown(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isRoleKnown(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -186,7 +186,7 @@ ALTER FUNCTION ClassDB.isUser(ClassDB.IDNameDomain) OWNER TO ClassDB;
 REVOKE ALL ON FUNCTION ClassDB.isUser(ClassDB.IDNameDomain) FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isUser(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -208,7 +208,7 @@ REVOKE ALL ON FUNCTION ClassDB.isTeam(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.isTeam(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
 
 
 
@@ -616,7 +616,7 @@ REVOKE ALL ON FUNCTION ClassDB.resetPassword(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.resetPassword(ClassDB.IDNameDomain)
-   TO ClassDB_Instructor, ClassDB_DBManager;
+   TO ClassDB_Admin;
 
 
 COMMIT;
