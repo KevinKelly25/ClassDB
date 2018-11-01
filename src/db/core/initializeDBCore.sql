@@ -97,7 +97,7 @@ $$;
 --Prevent users who are not instructors from modifying the public schema
 -- public schema contains objects and functions students can read
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-GRANT CREATE ON SCHEMA public TO ClassDB_Admin, ClassDB_Instructor;
+GRANT CREATE ON SCHEMA public TO ClassDB_Admin, ClassDB_Instructor, ClassDB;
 
 --Create a schema to hold app's admin info and assign privileges on that schema
 CREATE SCHEMA IF NOT EXISTS classdb AUTHORIZATION ClassDB;
