@@ -111,6 +111,11 @@ REVOKE ALL ON FUNCTION ClassDB.AddUserAccess() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION ClassDB.AddUserAccess()
       TO ClassDB_Admin;
 
+--Prevent users who are not instructors from modifying the public schema
+-- public schema contains objects and functions students can read
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+GRANT CREATE ON SCHEMA public TO ClassDB_Admin, ClassDB_Instructor, ClassDB;
+
 
 --Execute this above function for when script is run for first time on template
 -- database
