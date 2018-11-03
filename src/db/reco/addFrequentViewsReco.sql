@@ -278,6 +278,34 @@ GRANT SELECT ON ClassDB.MajorStudentObjects TO ClassDB_Admin, ClassDB_Instructor
 
 
 
+--This function gets and returns the details of a table when given a table name
+-- and username.
+CREATE OR REPLACE FUNCTION 
+  ClassDB.getTableDetails(Schemaname ClassDB.IDNameDomain,
+                          TableName VARCHAR(63))
+RETURNS TABLE
+(
+   Username ClassDB.IDNameDomain, SchemaName ClassDB.IDNameDomain, 
+   TableName VARCHAR(63), TableType VARCHAR(5), HasIndexes BOOLEAN, 
+   HasTriggers BOOLEAN, HasRules BOOLEAN, RowSecurity BOOLEAN
+) AS
+$$
+   SELECT tableowner AS Username, schemaname AS SchemaName,
+          tablename AS TableName, hasindexes AS HasIndexes, 
+          hastriggers AS HasTriggers, hasroles AS HasRules
+   FROM pg_catalog.pg_tables
+   WHERE Schemaname = $1 AND Tablename = $2;
+$$ LANGUAGE sql
+   SECURITY DEFINER;
+
+ALTER FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain)
+   OWNER TO ClassDB;
+REVOKE ALL ON FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain)
+   FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain)
+   TO ClassDB_Admin, ClassDB_Instructor;
+
+
 
 
 --This function gets the user activity summary for a given user. A value of NULL
