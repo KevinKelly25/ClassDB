@@ -1,6 +1,6 @@
 --addFrequentViewsReco.sql - ClassDB
 
---Andrew Figueroa, Steven Rollo, Sean Murthy
+--Andrew Figueroa, Steven Rollo, Sean Murthy, Kevin Kelly
 --Data Science & Systems Lab (DASSL)
 --https://dassl.github.io/
 
@@ -9,6 +9,12 @@
 --https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 --PROVIDED AS IS. NO WARRANTIES EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+
+--This file has been modified from the original by WADE (Web Applications
+-- and Databases for Education). All original authors are keep as-is on line
+-- 3 and WADE authors added to the end, if any member made significant changes.
+-- These modifications were made to support a web application that relies 
+-- heavily on ClassDB.
 
 --This script should be run as either a superuser or a user with write access
 -- to the ClassDB and PUBLIC schemas
