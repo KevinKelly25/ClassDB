@@ -11,7 +11,7 @@
 --PROVIDED AS IS. NO WARRANTIES EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 
 --This file has been modified from the original by WADE (Web Applications
--- and Databases for Education). All original authors are keep as-is on line
+-- and Databases for Education). All original authors are kept as-is on line
 -- 3 and WADE authors added to the end, if any member made significant changes.
 -- These modifications were made to support a web application that relies 
 -- heavily on ClassDB.
