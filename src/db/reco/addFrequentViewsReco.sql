@@ -279,32 +279,191 @@ GRANT SELECT ON ClassDB.MajorStudentObjects TO ClassDB_Admin, ClassDB_Instructor
 
 
 --This function gets and returns the details of a table when given a table name
--- and username.
+-- and username. Returns all the table description info from pg_tables and 
+-- also the column types
 CREATE OR REPLACE FUNCTION 
-  ClassDB.getTableDetails(Schemaname ClassDB.IDNameDomain,
-                          TableName VARCHAR(63))
+  ClassDB.getTableDetails(InputSchemaname ClassDB.IDNameDomain,
+                          InputTableName VARCHAR(63))
 RETURNS TABLE
 (
-   Username ClassDB.IDNameDomain, SchemaName ClassDB.IDNameDomain, 
-   TableName VARCHAR(63), TableType VARCHAR(5), HasIndexes BOOLEAN, 
-   HasTriggers BOOLEAN, HasRules BOOLEAN, RowSecurity BOOLEAN
+   Username NAME, SchemaName NAME, 
+   TableName NAME, HasIndexes BOOLEAN, 
+   HasTriggers BOOLEAN, HasRules BOOLEAN, Attributes TEXT
 ) AS
 $$
-   SELECT tableowner AS Username, schemaname AS SchemaName,
-          tablename AS TableName, hasindexes AS HasIndexes, 
-          hastriggers AS HasTriggers, hasroles AS HasRules
-   FROM pg_catalog.pg_tables
-   WHERE Schemaname = $1 AND Tablename = $2;
+DECLARE
+  Table_OID OID; --The OID of the table
+  Attributes TEXT;-- variable to store all the variable types to be returned
+  r RECORD;--used in for loop to hold "counter"
+BEGIN
+   --Find OID of the designated table to be used later in function
+   SELECT c.oid INTO Table_OID
+   FROM pg_catalog.pg_class c INNER JOIN pg_catalog.pg_namespace n 
+   ON n.oid = c.relnamespace
+   WHERE n.nspname = $1 AND c.relname = $2;
+   
+   --Loop through each column to find each associated type and concatenate to a 
+   -- single variable to be returned
+   FOR r IN
+      SELECT a.atttypid
+      FROM pg_catalog.pg_attribute a
+      WHERE a.attrelid = Table_OID AND a.attnum > 0
+   LOOP
+      IF Attributes IS NULL THEN 
+         Attributes := (SELECT typname
+                        FROM pg_type
+                        WHERE OID = r.atttypid);
+      ELSE 
+         Attributes := CONCAT(Attributes, ', ', (SELECT typname
+                                                 FROM pg_type
+                                                 WHERE OID = r.atttypid));
+      END IF;
+   END LOOP;
+
+   --return all details of pg_table and the added column attribute types
+   RETURN QUERY SELECT t.tableowner AS Username, t.schemaname AS SchemaName,
+          t.tablename AS TableName, t.hasindexes AS HasIndexes, 
+          t.hastriggers AS HasTriggers, t.hasrules AS HasRules,
+          Attributes AS AttributeTypes
+   FROM pg_catalog.pg_tables t
+   WHERE t.Schemaname = $1 AND t.Tablename = $2;
+END;
+$$ LANGUAGE plpgsql
+   SECURITY DEFINER;
+
+ALTER FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain, VARCHAR(63))
+   OWNER TO ClassDB;
+REVOKE ALL ON FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain, 
+                                               VARCHAR(63))
+   FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain,
+                                                  VARCHAR(63))
+   TO ClassDB_Admin, ClassDB_Instructor;
+
+
+--This function gets and returns the details of a view when given a view
+-- name and username. 
+CREATE OR REPLACE FUNCTION 
+  ClassDB.getViewDetails(InputSchemaname ClassDB.IDNameDomain,
+                         InputViewName VARCHAR(63))
+RETURNS TABLE
+(
+   Username NAME, SchemaName NAME, ViewName NAME, Definition TEXT
+) AS
+$$
+  SELECT viewowner, schemaname, viewname, definition
+  FROM pg_catalog.pg_views v
+  WHERE schemaname = $1 AND viewname = $2;
 $$ LANGUAGE sql
    SECURITY DEFINER;
 
-ALTER FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain)
+ALTER FUNCTION ClassDB.getViewDetails(ClassDB.IDNameDomain, VARCHAR(63))
    OWNER TO ClassDB;
-REVOKE ALL ON FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain)
+REVOKE ALL ON FUNCTION ClassDB.getViewDetails(ClassDB.IDNameDomain, VARCHAR(63))
    FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain)
+GRANT EXECUTE ON FUNCTION ClassDB.getViewDetails(ClassDB.IDNameDomain,
+                                                 VARCHAR(63))
    TO ClassDB_Admin, ClassDB_Instructor;
 
+
+--This function gets and returns the details of a Function when given a function
+-- name and username. 
+CREATE OR REPLACE FUNCTION 
+  ClassDB.getFunctionDetails(InputSchemaname ClassDB.IDNameDomain,
+                             InputFunctionName VARCHAR(63))
+RETURNS TABLE
+(
+   Username NAME, SchemaName NAME, FunctionName NAME, NumberOfArguments INT2, 
+   ReturnType NAME, EstimatedReturnRows FLOAT4, isAggregate BOOLEAN, 
+   isWindowFunction BOOLEAN, isSecurityDefiner BOOLEAN, 
+   returnsResultSet BOOLEAN, ArgumentTypes TEXT, SourceCode TEXT
+) AS
+$$
+  SELECT r.rolname, n.nspname,p.proname, p.pronargs, t.typname, p.prorows,
+         p.proisagg, p.proiswindow, p.prosecdef, p.proretset,
+         pg_catalog.pg_get_function_arguments(p.oid),p.prosrc
+  FROM pg_catalog.pg_proc p 
+  INNER JOIN pg_catalog.pg_namespace n ON p.pronamespace = n.oid 
+  INNER JOIN pg_catalog.pg_roles r ON p.proowner = r.oid
+  INNER JOIN pg_catalog.pg_type t ON p.prorettype = t.oid
+  WHERE n.nspname = LOWER($1) AND p.proname = LOWER($2);
+$$ LANGUAGE sql
+   SECURITY DEFINER;
+
+ALTER FUNCTION ClassDB.getFunctionDetails(ClassDB.IDNameDomain, VARCHAR(63))
+   OWNER TO ClassDB;
+REVOKE ALL ON FUNCTION ClassDB.getFunctionDetails(ClassDB.IDNameDomain,
+                                                  VARCHAR(63))
+   FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ClassDB.getFunctionDetails(ClassDB.IDNameDomain,
+                                                     VARCHAR(63))
+   TO ClassDB_Admin, ClassDB_Instructor;
+
+
+--This function gets and returns the details of a trigger when given a trigger
+-- name and username. 
+CREATE OR REPLACE FUNCTION 
+  ClassDB.getTriggerDetails(InputSchemaname ClassDB.IDNameDomain,
+                            InputTriggerName VARCHAR(63))
+RETURNS TABLE
+(
+   Username NAME, SchemaName NAME, TriggerName NAME, OnTable NAME, 
+   OnFunction NAME 
+) AS
+$$
+  SELECT r.rolname, n.nspname, t.tgname, c.relname, p.proname
+  FROM pg_catalog.pg_trigger t
+  INNER JOIN pg_catalog.pg_class c ON c.oid = t.tgrelid
+  INNER JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+  INNER JOIN pg_catalog.pg_roles r ON r.oid = c.relowner
+  INNER JOIN pg_catalog.pg_proc p ON p.oid = t.tgfoid
+  WHERE n.nspname = $1 AND t.tgname = $2
+$$ LANGUAGE sql
+   SECURITY DEFINER;
+
+ALTER FUNCTION ClassDB.getTriggerDetails(ClassDB.IDNameDomain, VARCHAR(63))
+   OWNER TO ClassDB;
+REVOKE ALL ON FUNCTION ClassDB.getTriggerDetails(ClassDB.IDNameDomain,
+                                                  VARCHAR(63))
+   FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ClassDB.getTriggerDetails(ClassDB.IDNameDomain,
+                                                     VARCHAR(63))
+   TO ClassDB_Admin, ClassDB_Instructor;
+
+
+
+--This function gets and returns the details of a Function when given a function
+-- name and username. 
+CREATE OR REPLACE FUNCTION 
+  ClassDB.getIndexDetails(InputSchemaname ClassDB.IDNameDomain,
+                          InputIndexName VARCHAR(63))
+RETURNS TABLE
+(
+   Username NAME, SchemaName NAME, IndexName NAME, OnTable NAME, 
+   NumberOfColums SMALLINT, isUnique BOOLEAN, isPrimaryKey BOOLEAN, 
+   IndexDefinition TEXT
+) AS
+$$
+  SELECT r.rolname, n.nspname, c.relname, c2.relname, i.indnatts, i.indisunique,
+         i.indisprimary, i2.indexdef
+  FROM pg_catalog.pg_index i
+  INNER JOIN pg_catalog.pg_class c ON c.oid = i.indexrelid
+  INNER JOIN pg_catalog.pg_class c2 ON c2.oid = i.indrelid
+  INNER JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+  INNER JOIN pg_catalog.pg_roles r ON r.oid = c.relowner
+  INNER JOIN pg_catalog.pg_indexes i2 ON i2.indexname = c.relname
+  WHERE n.nspname = $1 and c.relname = $2;
+$$ LANGUAGE sql
+   SECURITY DEFINER;
+
+ALTER FUNCTION ClassDB.getIndexDetails(ClassDB.IDNameDomain, VARCHAR(63))
+   OWNER TO ClassDB;
+REVOKE ALL ON FUNCTION ClassDB.getIndexDetails(ClassDB.IDNameDomain,
+                                               VARCHAR(63))
+   FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ClassDB.getIndexDetails(ClassDB.IDNameDomain,
+                                                  VARCHAR(63))
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
