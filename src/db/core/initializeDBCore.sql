@@ -65,9 +65,21 @@ BEGIN
 END
 $$;
 
+--Prevent users who are not instructors from modifying the public schema
+-- public schema contains objects and functions students can read
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+GRANT CREATE ON SCHEMA public TO ClassDB_Admin, ClassDB_Instructor;
 
---Grant appropriate privileges to different roles to the current database
-DO
+--Create a schema to hold app's admin info and assign privileges on that schema
+CREATE SCHEMA IF NOT EXISTS classdb AUTHORIZATION ClassDB;
+GRANT USAGE ON SCHEMA classdb 
+      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
+
+--Define a function to grant appropriate privileges to different roles to the 
+-- current database This is added so that it can be called again when ClassDB
+-- database is used as a template
+CREATE OR REPLACE FUNCTION ClassDB.AddUserAccess()
+RETURNS VOID AS
 $$
 DECLARE
    currentDB VARCHAR(128);
@@ -88,21 +100,31 @@ BEGIN
    EXECUTE format('GRANT CREATE ON DATABASE %I TO ClassDB, ClassDB_Admin, '
                   'ClassDB_Instructor, ClassDB_Student, ClassDB_DBManager'
                   , currentDB);
+END;
+$$ LANGUAGE plpgsql;
 
-END
-$$;
 
+ALTER FUNCTION ClassDB.AddUserAccess() OWNER TO ClassDB;
 
+REVOKE ALL ON FUNCTION ClassDB.AddUserAccess() FROM PUBLIC;
+
+GRANT EXECUTE ON FUNCTION ClassDB.AddUserAccess()
+      TO ClassDB_Admin;
 
 --Prevent users who are not instructors from modifying the public schema
 -- public schema contains objects and functions students can read
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 GRANT CREATE ON SCHEMA public TO ClassDB_Admin, ClassDB_Instructor, ClassDB;
 
---Create a schema to hold app's admin info and assign privileges on that schema
-CREATE SCHEMA IF NOT EXISTS classdb AUTHORIZATION ClassDB;
-GRANT USAGE ON SCHEMA classdb 
-      TO ClassDB_Admin, ClassDB_Instructor, ClassDB_DBManager;
+
+--Execute this above function for when script is run for first time on template
+-- database
+DO
+$$
+BEGIN
+  PERFORM ClassDB.AddUserAccess();
+END
+$$;
 
 
 COMMIT;
