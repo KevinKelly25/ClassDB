@@ -335,6 +335,7 @@ BEGIN
    WHERE t.Schemaname = $1 AND t.Tablename = $2;
 END;
 $$ LANGUAGE plpgsql
+   STABLE
    SECURITY DEFINER;
 
 ALTER FUNCTION ClassDB.getTableDetails(ClassDB.IDNameDomain, VARCHAR(63))
@@ -361,6 +362,7 @@ $$
   FROM pg_catalog.pg_views v
   WHERE schemaname = $1 AND viewname = $2;
 $$ LANGUAGE sql
+   STABLE
    SECURITY DEFINER;
 
 ALTER FUNCTION ClassDB.getViewDetails(ClassDB.IDNameDomain, VARCHAR(63))
@@ -394,6 +396,7 @@ $$
   INNER JOIN pg_catalog.pg_type t ON p.prorettype = t.oid
   WHERE n.nspname = LOWER($1) AND p.proname = LOWER($2);
 $$ LANGUAGE sql
+   STABLE
    SECURITY DEFINER;
 
 ALTER FUNCTION ClassDB.getFunctionDetails(ClassDB.IDNameDomain, VARCHAR(63))
@@ -425,6 +428,7 @@ $$
   INNER JOIN pg_catalog.pg_proc p ON p.oid = t.tgfoid
   WHERE n.nspname = $1 AND t.tgname = $2
 $$ LANGUAGE sql
+   STABLE
    SECURITY DEFINER;
 
 ALTER FUNCTION ClassDB.getTriggerDetails(ClassDB.IDNameDomain, VARCHAR(63))
@@ -460,6 +464,7 @@ $$
   INNER JOIN pg_catalog.pg_indexes i2 ON i2.indexname = c.relname
   WHERE n.nspname = $1 and c.relname = $2;
 $$ LANGUAGE sql
+   STABLE
    SECURITY DEFINER;
 
 ALTER FUNCTION ClassDB.getIndexDetails(ClassDB.IDNameDomain, VARCHAR(63))
