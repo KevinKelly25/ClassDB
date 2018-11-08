@@ -803,7 +803,7 @@ REVOKE ALL ON FUNCTION
 
 GRANT EXECUTE ON FUNCTION
    ClassDB.addToTeam(ClassDB.IDNameDomain, ClassDB.IDNameDomain)
-   TO ClassDB_Admin;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -890,7 +890,7 @@ REVOKE ALL ON FUNCTION
 
 GRANT EXECUTE ON FUNCTION
    ClassDB.removeFromTeam(ClassDB.IDNameDomain, ClassDB.IDNameDomain)
-   TO ClassDB_Admin;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 
@@ -915,7 +915,7 @@ REVOKE ALL ON FUNCTION ClassDB.removeAllFromTeam(ClassDB.IDNameDomain)
    FROM PUBLIC;
 
 GRANT EXECUTE ON FUNCTION ClassDB.removeAllFromTeam(ClassDB.IDNameDomain)
-   TO ClassDB_Admin;
+   TO ClassDB_Admin, ClassDB_Instructor;
 
 
 COMMIT;
