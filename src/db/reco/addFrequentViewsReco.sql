@@ -299,8 +299,8 @@ RETURNS TABLE
 $$
 DECLARE
   Table_OID OID; --The OID of the table
-  Attributes TEXT;-- variable to store all the variable types to be returned
-  r RECORD;--used in for loop to hold "counter"
+  Attributes TEXT;--Variable to store all the variable types to be returned
+  r RECORD;--Used in for loop to hold "counter"
 BEGIN
    --Find OID of the designated table to be used later in function
    SELECT c.oid INTO Table_OID
@@ -316,17 +316,17 @@ BEGIN
       WHERE a.attrelid = Table_OID AND a.attnum > 0
    LOOP
       IF Attributes IS NULL THEN 
-         Attributes := (SELECT typname
+         Attributes = (SELECT typname
                         FROM pg_type
                         WHERE OID = r.atttypid);
       ELSE 
-         Attributes := CONCAT(Attributes, ', ', (SELECT typname
+         Attributes = CONCAT(Attributes, ', ', (SELECT typname
                                                  FROM pg_type
                                                  WHERE OID = r.atttypid));
       END IF;
    END LOOP;
 
-   --return all details of pg_table and the added column attribute types
+   --Return all details of pg_table and the added column attribute types
    RETURN QUERY SELECT t.tableowner AS Username, t.schemaname AS SchemaName,
           t.tablename AS TableName, t.hasindexes AS HasIndexes, 
           t.hastriggers AS HasTriggers, t.hasrules AS HasRules,
