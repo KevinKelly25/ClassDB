@@ -450,7 +450,7 @@ CREATE OR REPLACE FUNCTION
 RETURNS TABLE
 (
    Username NAME, SchemaName NAME, IndexName NAME, OnTable NAME, 
-   NumberOfColums SMALLINT, isUnique BOOLEAN, isPrimaryKey BOOLEAN, 
+   NumberOfColumns SMALLINT, isUnique BOOLEAN, isPrimaryKey BOOLEAN, 
    IndexDefinition TEXT
 ) AS
 $$
