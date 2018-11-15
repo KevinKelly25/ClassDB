@@ -212,7 +212,7 @@ GRANT SELECT ON ClassDB.StudentTriggers TO ClassDB_Admin, ClassDB_Instructor;
 CREATE OR REPLACE VIEW ClassDB.UserIndexes AS
 (
   SELECT r.rolname AS Username, n.nspname AS SchemaName, 
-         c2.relname AS IndexName, c.relname AS OnTable
+         c.relname AS IndexName, c2.relname AS OnTable
   FROM pg_catalog.pg_index i
   INNER JOIN pg_catalog.pg_class c ON c.oid = i.indexrelid
   INNER JOIN pg_catalog.pg_class c2 ON c2.oid = i.indrelid
