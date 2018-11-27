@@ -383,17 +383,18 @@ RETURNS TABLE
 (
    Username NAME, SchemaName NAME, FunctionName NAME, NumberOfArguments INT2, 
    ReturnType NAME, EstimatedReturnRows FLOAT4, isAggregate BOOLEAN, 
-   isWindowFunction BOOLEAN, isSecurityDefiner BOOLEAN, 
+   isWindowFunction BOOLEAN, isSecurityDefiner BOOLEAN, FunctionLanguage NAME,
    returnsResultSet BOOLEAN, ArgumentTypes TEXT, SourceCode TEXT
 ) AS
 $$
   SELECT r.rolname, n.nspname,p.proname, p.pronargs, t.typname, p.prorows,
-         p.proisagg, p.proiswindow, p.prosecdef, p.proretset,
-         pg_catalog.pg_get_function_arguments(p.oid),p.prosrc
+         p.proisagg, p.proiswindow, p.prosecdef, l.lanname, p.proretset, 
+         pg_catalog.pg_get_function_arguments(p.oid), p.prosrc
   FROM pg_catalog.pg_proc p 
   INNER JOIN pg_catalog.pg_namespace n ON p.pronamespace = n.oid 
   INNER JOIN pg_catalog.pg_roles r ON p.proowner = r.oid
   INNER JOIN pg_catalog.pg_type t ON p.prorettype = t.oid
+  INNER JOIN pg_catalog.pg_language l on p.prolang = l.oid
   WHERE n.nspname = LOWER($1) AND p.proname = LOWER($2);
 $$ LANGUAGE sql
    STABLE
